@@ -101,7 +101,7 @@
 
       const keycode = parseInt(e.keyCode);
 
-      if(keycode === 9)  { // TAB to switch color
+      if(keycode === 9 && isTargetContentDom(e.target))  { // TAB to switch color
         switchColor();
         stop = true;
       }
@@ -238,6 +238,17 @@
     toDataURL(url, function(dataUrl) {
       newImg.innerHTML = `<img src="${dataUrl}" altText="Doc Image" />`;
     })
+  }
+
+  function isTargetContentDom(startDom) {
+      let targetDom = startDom
+      while (targetDom) {
+          if (targetDom && targetDom.id === 'content-dialog') {
+              return true;
+          }
+          targetDom = targetDom.parentElement;
+      }
+      return false;
   }
 
   switchColor();
