@@ -44,6 +44,23 @@
         box-sizing: border-box;
       }
 
+      #content-dialog #content-dialog-close-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 10px;
+        margin: 0;
+        background: black;
+        color: white;
+        height: 40px;
+        width: 40px;
+        cursor: pointer;
+      }
+
+      #content-dialog #content-dialog-close-btn:hover, #content-dialog #content-dialog-close-btn:focus{
+        background: #333;
+      }
+
       #content-dialog pre{
         border: 3px dotted var(--color-border);
         padding: 10px;
@@ -207,6 +224,15 @@
       contentDom.addEventListener('blur', () => {
         contentDom.focus();
       })
+
+      // add the close button
+      const closeContentBtn = document.createElement('button');
+      closeContentBtn.innerText = 'X'
+      closeContentBtn.id = 'content-dialog-close-btn'
+      closeContentBtn.addEventListener('click', () => {
+        contentDom.remove();
+      })
+      articleContent.append(closeContentBtn)
     } else {
       // setTimeout(_formatMarkdownForKeep, 300);
       contentDom.remove();
