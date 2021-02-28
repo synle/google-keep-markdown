@@ -146,7 +146,7 @@
 
   let contentDom = document.getElementById('content-dialog');
 
-  function _formatMarkdownForKeep(){
+  function _formatMarkdownForKeep(suppressError){
     const origTitleDom =document.querySelectorAll(`[contenteditable="true"][spellcheck="true"]`)[0]
     const origContentDom =document.querySelectorAll(`[contenteditable="true"][spellcheck="true"]`)[1]
     contentDom = document.getElementById('content-dialog');
@@ -236,7 +236,9 @@
     } else {
       // setTimeout(_formatMarkdownForKeep, 300);
       contentDom.remove();
-      alert('Preview is not supported');
+      if(suppressError !== true){
+        alert('Preview is not supported');  
+      }
     }
   }
 
@@ -292,16 +294,13 @@
 
   switchColor();
 
+  // auto load the first time
+  setTimeout(() => _formatMarkdownForKeep(true), 300);
+
 
   // listen on dom mutation
-  // Select the node that will be observed for mutations
-  const targetNode = document.querySelector('.notes-container');
-
-  // Options for the observer (which mutations to observe)
-  const config = { attributes: true, childList: false, subtree: false };
-
   // Callback function to execute when mutations are observed
-  const callback = () => {
+  const _setupFormatButtonCallback = () => {
     let noteCloseBtns = []
     for(let button of document.querySelectorAll('[role="button"')){
       if(button.innerText.trim() === 'Close'){
@@ -325,8 +324,11 @@
   }
 
   // Create an observer instance linked to the callback function
-  const observer = new MutationObserver(callback);
-
   // Start observing the target node for configured mutations
-  observer.observe(targetNode, config);
+  const targetNode = document.querySelector('.notes-container');
+  new MutationObserver(_setupFormatButtonCallback).observe(targetNode, {
+    attributes: true,
+    childList: false,
+    subtree: false
+  });
 })();
