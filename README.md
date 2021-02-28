@@ -7,6 +7,9 @@ This is a bookrmarklet code that you can use to make Google Keep showing bookmar
 - Show images associated with Keep notes
 - Support copy and paste into Google Doc or Microsoft Word by converting the images into Base64 encoded content
 
+## TODO:
+- Make this into a Chrome Extension
+
 ## Demo and Screenshot
 #### Run the bookmarklet after you open the Google Note
 ![image](https://user-images.githubusercontent.com/3792401/109424331-1046d700-7998-11eb-9a64-2d0746905ea5.png)
