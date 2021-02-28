@@ -4,7 +4,19 @@ This is a bookrmarklet code that you can use to make Google Keep showing bookmar
 ## Features
 - Responsive UI for wide screen or small screen
 - Dark and Light mode
+- Show images associated with Keep notes
 - Support copy and paste into Google Doc or Microsoft Word by converting the images into Base64 encoded content
+
+## Demo and Screenshot
+#### Run the bookmarklet after you open the Google Note
+![image](https://user-images.githubusercontent.com/3792401/109424331-1046d700-7998-11eb-9a64-2d0746905ea5.png)
+
+#### Preview of Markdown content 
+##### Small Viewport
+![image](https://user-images.githubusercontent.com/3792401/109424388-47b58380-7998-11eb-8499-72317ef9674f.png)
+
+##### Larger Viewport
+![image](https://user-images.githubusercontent.com/3792401/109424398-4d12ce00-7998-11eb-8c54-029cf6094ba0.png)
 
 
 ## Instruction
