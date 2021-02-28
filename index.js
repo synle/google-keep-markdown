@@ -1,7 +1,7 @@
 (function(){
   let target = document.body;
   const isDarkMode = new Date().getHours() >= 19 || new Date().getHours() <= 8;
-  let colorIdx = isDarkMode ? 1: 0;// default is dark
+  let colorIdx = 0;
   let styleDom = document.getElementById('style-dialog');
   if(!styleDom){
     styleDom = document.createElement("style");
@@ -25,15 +25,24 @@
         color: var(--color-fg);
         padding: 20px 25px;
         overflow: auto;
-        border: 3px solid var(--color-border);
-        border-radius: 5px
+        border: 5px solid var(--color-border);
+        border-radius: 5px;
+        display: grid;
+        grid-template-columns: minmax(600px, 1fr) 450px;
+        box-sizing: border-box;
+      }
+
+      #content-dialog pre{
+        border: 1px solid var(--color-border);
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 10px;
       }
 
       #content-dialog h1{
         padding: 0;
         margin: 0;
         margin-bottom: 15px;
-        border-bottom: 2px solid var(--color-fg)
       }
 
       #content-dialog a{
@@ -54,12 +63,28 @@
         margin-bottom: 20px;
       }
 
-      #content-dialog img{
-        max-height: 550px;
+      #content-dialog figure{
+
+      }
+
+      #content-dialog figure img{
+        width: 100%;
         display: block;
         margin: 0 auto 30px 0;
         border-radius: 5px;
         border: 2px solid  var(--color-border)
+      }
+
+      @media only screen and (min-width: 1600px) {
+        #content-dialog{
+          grid-template-columns: minmax(800px, 1fr) 900px;
+        }
+      }
+
+      @media only screen and (max-width: 1050px) {
+        #content-dialog{
+          grid-template-columns: 1fr;
+        }
       }
     `
     target.appendChild(styleDom); 
@@ -73,7 +98,7 @@
 
       const keycode = parseInt(e.keyCode);
 
-      if(keycode === 9 || keycode === 16)  {
+      if(keycode === 9)  {
         switchColor();
 
         contentDom.focus();
@@ -137,16 +162,22 @@
     }
 
     if(shouldBindData){
-      const newContentHtml = marked(`# ${origTitleDom.innerText}\n` + origContentDom.innerText).trim();
-      if(newContentHtml !== contentDom.innerHTML && document.activeElement.id !== 'content-dialog'){
-        contentDom.innerHTML = newContentHtml;
+      const articleContent = document.createElement('article');
+      contentDom.append(articleContent)
+      const figureImages = document.createElement('figure');
+        contentDom.append(figureImages)
+
+      const newContentHtml = `<h2>${origTitleDom.innerText}</h2><hr />` + marked(origContentDom.innerText).trim();
+      if(newContentHtml !== articleContent.innerHTML && document.activeElement.id !== 'content-dialog'){
+        articleContent.innerHTML = newContentHtml;
 
         // append images
         try{
           for(const img of origTitleDom.previousSibling.querySelectorAll('img')){
             const newImg = document.createElement("div");
-            newImg.innerHTML = `<a href="${img.src}"><img src="${img.src}" altText="Doc Image" /></a>`;
-            contentDom.append(newImg)
+            // newImg.innerHTML = `Loading Image...`;
+            parseAndInsertImageAsBase64(img.src, newImg);
+            figureImages.append(newImg)
           }
         } catch(err){
 
@@ -156,7 +187,8 @@
 
       contentDom.focus();
     } else {
-      setTimeout(_formatMarkdownForKeep, 300);
+      // setTimeout(_formatMarkdownForKeep, 300);
+      contentDom.remove();
     }
   }
 
@@ -169,7 +201,7 @@
       r.style.setProperty('--color-bg', '#282a36');
       r.style.setProperty('--color-fg', '#f8f8f2');
       r.style.setProperty('--color-link', '#50fa7b');
-      r.style.setProperty('--color-border', '#44475a');  
+      r.style.setProperty('--color-border', '#f1fa8c');  
     } else {
       // light
       r.style.setProperty('--color-bg', '#f8f8f2');
@@ -177,6 +209,26 @@
       r.style.setProperty('--color-link', '#ff5555');
       r.style.setProperty('--color-border', '#44475a');
     }
+  }
+
+  function toDataURL(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      var reader = new FileReader();
+      reader.onloadend = function() {
+        callback(reader.result);
+      }
+      reader.readAsDataURL(xhr.response);
+    };
+    xhr.open('GET', url);
+    xhr.responseType = 'blob';
+    xhr.send();
+  }
+
+  function parseAndInsertImageAsBase64(url, newImg){
+    toDataURL(url, function(dataUrl) {
+      newImg.innerHTML = `<img src="${dataUrl}" altText="Doc Image" />`;
+    })
   }
 
   switchColor();
