@@ -37,6 +37,9 @@
         padding: 10px;
         margin-top: 7px;
         margin-bottom: 10px;
+        text-overflow: ellipsis;
+        word-break: break-all;
+        overflow: hidden;
       }
 
       #content-dialog h1{
