@@ -1,5 +1,10 @@
 # google-keep-markdown
-This is a bookrmarklet code that you can use to make Google Keep showing bookmarklet
+This is a bookrmarklet code that you can use to make Google Keep showing bookmarklet.
+
+## Features
+- Responsive UI for wide screen or small screen
+- Dark and Light mode
+- Support copy and paste into Google Doc or Microsoft Word by converting the images into Base64 encoded content
 
 
 ## Instruction
