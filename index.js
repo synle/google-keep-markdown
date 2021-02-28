@@ -167,27 +167,28 @@
     if(shouldBindData){
       const articleContent = document.createElement('article');
       contentDom.append(articleContent)
-      const figureImages = document.createElement('figure');
-        contentDom.append(figureImages)
 
       const newContentHtml = `<h2>${origTitleDom.innerText}</h2><hr />` + marked(origContentDom.innerText).trim();
-      if(newContentHtml !== articleContent.innerHTML && document.activeElement.id !== 'content-dialog'){
-        articleContent.innerHTML = newContentHtml;
+      
+      if (newContentHtml !== articleContent.innerHTML && document.activeElement.id !== 'content-dialog') {
+          articleContent.innerHTML = newContentHtml;
 
-        // append images
-        try{
-          for(const img of origTitleDom.previousSibling.querySelectorAll('img')){
-            const newImg = document.createElement("div");
-            // newImg.innerHTML = `Loading Image...`;
-            parseAndInsertImageAsBase64(img.src, newImg);
-            figureImages.append(newImg)
+          // append images
+          const noteImages = origTitleDom.previousSibling.querySelectorAll('img');
+          if (noteImages.length > 0) {
+              const figureImages = document.createElement('figure');
+              contentDom.append(figureImages)
+              try {
+                  for (const img of origTitleDom.previousSibling.querySelectorAll('img')) {
+                      const newImg = document.createElement("div");
+                      // newImg.innerHTML = `Loading Image...`;
+                      parseAndInsertImageAsBase64(img.src, newImg);
+                      figureImages.append(newImg)
+                  }
+              } catch (err) {}
           }
-        } catch(err){
-
-        }
       }
       
-
       contentDom.focus();
     } else {
       // setTimeout(_formatMarkdownForKeep, 300);
