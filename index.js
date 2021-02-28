@@ -194,8 +194,8 @@
       
       contentDom.focus();
     } else {
-      // setTimeout(_formatMarkdownForKeep, 300);
       contentDom.remove();
+      alert('Preview not supported');
     }
   }
 
