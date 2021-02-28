@@ -96,24 +96,20 @@
     newScript.src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js";
     target.appendChild(newScript);
 
-    window.addEventListener('keydown', (e) =>{ 
+    window.addEventListener('keydown', (e) =>{
       let stop = false;
 
       const keycode = parseInt(e.keyCode);
 
-      if(keycode === 9)  {
+      if(keycode === 9)  { // TAB to switch color
         switchColor();
-
-        contentDom.focus();
-
         stop = true;
       }
 
       if(stop){
         e.preventDefault();
         e.stopPropagation();
-
-        origContentDom.focus();
+        contentDom.focus();
         return false;
       }
     })
@@ -193,6 +189,12 @@
       }
       
       contentDom.focus();
+      
+      // force focus on the content dom to stop google keep from 
+      // doing the infinite scroll loader
+      contentDom.addEventListener('blur', () => {
+        contentDom.focus();
+      })
     } else {
       contentDom.remove();
       alert('Preview not supported');
