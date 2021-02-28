@@ -33,9 +33,9 @@
       }
 
       #content-dialog pre{
-        border: 1px solid var(--color-border);
+        border: 3px dotted var(--color-border);
         padding: 10px;
-        margin-top: 5px;
+        margin-top: 7px;
         margin-bottom: 10px;
       }
 
