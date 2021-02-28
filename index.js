@@ -104,8 +104,18 @@
         display: block;
         margin: 0 auto 30px 0;
         border-radius: 5px;
-        border: 2px solid  var(--color-border)
+        border: 3px solid var(--color-border);
       }
+
+      #content-dialog figure img:hover{
+        border-color: var(--color-link);
+      }
+
+      #content-dialog a{
+        cursor: pointer;
+        text-decoration: none;
+      }
+
 
       @media only screen and (max-width: 1050px) {
         #content-dialog{
