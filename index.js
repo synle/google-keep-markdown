@@ -217,6 +217,11 @@
           }
       }
 
+      for(const anchor of contentDom.querySelectorAll('a')){
+        anchor.target = '_blank'
+        anchor.contentEditable = false;
+      }
+
       contentDom.focus();
 
       // force focus on the content dom to stop google keep from
@@ -277,7 +282,7 @@
 
   function parseAndInsertImageAsBase64(url, newImg){
     toDataURL(url, function(dataUrl) {
-      newImg.innerHTML = `<img src="${dataUrl}" altText="Doc Image" />`;
+      newImg.innerHTML = `<a href='${url}'><img src="${dataUrl}" altText="Doc Image" /></a>`;
     })
   }
 
