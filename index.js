@@ -4,7 +4,7 @@
 // @version      0.1
 // @description  try to take over the world!
 // @author       You
-// @match        https://keep.google.com/
+// @match        *://keep.google.com/u/*
 // @grant        none
 // ==/UserScript==
 
@@ -219,7 +219,7 @@
 
       contentDom.focus();
 
-      // force focus on the content dom to stop google keep from 
+      // force focus on the content dom to stop google keep from
       // doing the infinite scroll loader
       contentDom.addEventListener('blur', () => {
         contentDom.focus();
@@ -237,7 +237,7 @@
       // setTimeout(_formatMarkdownForKeep, 300);
       contentDom.remove();
       if(suppressError !== true){
-        alert('Preview is not supported');  
+        alert('Preview is not supported');
       }
     }
   }
@@ -295,40 +295,41 @@
   switchColor();
 
   // auto load the first time
-  setTimeout(() => _formatMarkdownForKeep(true), 300);
+  setTimeout(() => {
+    _formatMarkdownForKeep(true);
 
+    // listen on dom mutation
+    // Callback function to execute when mutations are observed
+    const _setupFormatButtonCallback = () => {
+      let noteCloseBtns = []
+      for(let button of document.querySelectorAll('[role="button"')){
+        if(button.innerText.trim() === 'Close'){
+          noteCloseBtns.push(button)
+        }
+      }
 
-  // listen on dom mutation
-  // Callback function to execute when mutations are observed
-  const _setupFormatButtonCallback = () => {
-    let noteCloseBtns = []
-    for(let button of document.querySelectorAll('[role="button"')){
-      if(button.innerText.trim() === 'Close'){
-        noteCloseBtns.push(button)
+      // insert this button
+      for(let noteCloseBtn of noteCloseBtns){
+        if(noteCloseBtn && noteCloseBtn.parentElement.querySelectorAll('.format-markdown-modal-btn').length === 0){
+          const formatButton = document.createElement('div');
+          formatButton.innerText = 'Format'
+          formatButton.className = `format-markdown-modal-btn ${noteCloseBtn.className}`
+          formatButton.style.marginRight = 0;
+          formatButton.style.background = 'red';
+          formatButton.style.color = 'white';
+          formatButton.addEventListener('click', _formatMarkdownForKeep)
+          noteCloseBtn.parentElement.prepend(formatButton);
+        }
       }
     }
 
-    // insert this button
-    for(let noteCloseBtn of noteCloseBtns){
-      if(noteCloseBtn && noteCloseBtn.parentElement.querySelectorAll('.format-markdown-modal-btn').length === 0){
-        const formatButton = document.createElement('div');
-        formatButton.innerText = 'Format'
-        formatButton.className = `format-markdown-modal-btn ${noteCloseBtn.className}`
-        formatButton.style.marginRight = 0;
-        formatButton.style.background = 'red';
-        formatButton.style.color = 'white';
-        formatButton.addEventListener('click', _formatMarkdownForKeep)
-        noteCloseBtn.parentElement.prepend(formatButton);
-      }
-    }
-  }
-
-  // Create an observer instance linked to the callback function
-  // Start observing the target node for configured mutations
-  const targetNode = document.querySelector('.notes-container');
-  new MutationObserver(_setupFormatButtonCallback).observe(targetNode, {
-    attributes: true,
-    childList: false,
-    subtree: false
-  });
+    // Create an observer instance linked to the callback function
+    // Start observing the target node for configured mutations
+    const targetNode = document.querySelector('.notes-container');
+    new MutationObserver(_setupFormatButtonCallback).observe(targetNode, {
+      attributes: true,
+      childList: true,
+      subtree: true
+    });
+  }, 500);
 })();
