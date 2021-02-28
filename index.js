@@ -165,6 +165,9 @@
     }
 
     if(shouldBindData){
+      // clean the dom
+      contentDom.innerText = '';
+      
       const articleContent = document.createElement('article');
       contentDom.append(articleContent)
 
