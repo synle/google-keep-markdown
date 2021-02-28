@@ -152,7 +152,7 @@
 
   let contentDom = document.getElementById('content-dialog');
 
-  function _formatMarkdownForKeep(suppressError){
+  async function _formatMarkdownForKeep(suppressError){
     const origTitleDom =document.querySelectorAll(`[contenteditable="true"][spellcheck="true"]`)[0]
     const origContentDom =document.querySelectorAll(`[contenteditable="true"][spellcheck="true"]`)[1]
     contentDom = document.getElementById('content-dialog');
@@ -202,34 +202,6 @@
       const articleContent = document.createElement('article');
       contentDom.append(articleContent)
 
-      const newContentHtml = `<h2>${origTitleDom.innerText}</h2><hr />` + marked(origContentDom.innerText).trim();
-
-      if (newContentHtml !== articleContent.innerHTML && document.activeElement.id !== 'content-dialog') {
-          articleContent.innerHTML = newContentHtml;
-
-          // append images
-          const noteImages = origTitleDom.previousSibling.querySelectorAll('img');
-          if (noteImages.length > 0) {
-              const figureImages = document.createElement('figure');
-              contentDom.append(figureImages)
-              try {
-                  for (const img of origTitleDom.previousSibling.querySelectorAll('img')) {
-                      const newImg = document.createElement("div");
-                      // newImg.innerHTML = `Loading Image...`;
-                      parseAndInsertImageAsBase64(img.src, newImg);
-                      figureImages.append(newImg)
-                  }
-              } catch (err) {}
-          }
-      }
-
-      for(const anchor of contentDom.querySelectorAll('a')){
-        anchor.target = '_blank'
-        anchor.contentEditable = false;
-      }
-
-      contentDom.focus();
-
       // force focus on the content dom to stop google keep from
       // doing the infinite scroll loader
       contentDom.addEventListener('blur', () => {
@@ -244,6 +216,36 @@
         contentDom.remove();
       })
       articleContent.append(closeContentBtn)
+
+      const newContentHtml = `<h2>${origTitleDom.innerText}</h2><hr />` + marked(origContentDom.innerText).trim();
+
+      if (newContentHtml !== articleContent.innerHTML && document.activeElement.id !== 'content-dialog') {
+          articleContent.innerHTML = newContentHtml;
+
+          // append images
+          const noteImages = origTitleDom.previousSibling.querySelectorAll('img');
+          if (noteImages.length > 0) {
+              const figureImages = document.createElement('figure');
+              contentDom.append(figureImages)
+
+              const requestPromises = [];
+              for (const img of origTitleDom.previousSibling.querySelectorAll('img')) {
+                  const newImg = document.createElement("div");
+                  // newImg.innerHTML = `Loading Image...`;
+                  requestPromises.push(parseAndInsertImageAsBase64(img.src, newImg));
+                  figureImages.append(newImg)
+              }
+
+              await Promise.resolve(requestPromises)
+          }
+      }
+
+      for(const anchor of contentDom.querySelectorAll('a')){
+        anchor.target = '_blank'
+        anchor.contentEditable = false;
+      }
+
+      contentDom.focus();
     } else {
       // setTimeout(_formatMarkdownForKeep, 300);
       contentDom.remove();
@@ -287,8 +289,11 @@
   }
 
   function parseAndInsertImageAsBase64(url, newImg){
-    toDataURL(url, function(dataUrl) {
-      newImg.innerHTML = `<a href='${url}'><img src="${dataUrl}" altText="Doc Image" /></a>`;
+    return new Promise(resolve => {
+      toDataURL(url, function(dataUrl) {
+        newImg.innerHTML = `<a href='${url}'><img src="${dataUrl}" altText="Doc Image" /></a>`;
+        resolve();
+      })
     })
   }
 
