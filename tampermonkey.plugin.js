@@ -292,7 +292,16 @@
 
   switchColor();
 
-  setInterval(() => {
+
+  // listen on dom mutation
+  // Select the node that will be observed for mutations
+  const targetNode = document.querySelector('.notes-container');
+
+  // Options for the observer (which mutations to observe)
+  const config = { attributes: true, childList: false, subtree: false };
+
+  // Callback function to execute when mutations are observed
+  const callback = () => {
     let noteCloseBtns = []
     for(let button of document.querySelectorAll('[role="button"')){
       if(button.innerText.trim() === 'Close'){
@@ -313,5 +322,11 @@
         noteCloseBtn.parentElement.prepend(formatButton);
       }
     }
-  }, 1000)
+  }
+
+  // Create an observer instance linked to the callback function
+  const observer = new MutationObserver(callback);
+
+  // Start observing the target node for configured mutations
+  observer.observe(targetNode, config);
 })();
