@@ -329,7 +329,7 @@
     new MutationObserver(_setupFormatButtonCallback).observe(targetNode, {
       attributes: true,
       childList: true,
-      subtree: true
+      subtree: false
     });
   }, 500);
 })();
