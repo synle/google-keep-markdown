@@ -251,7 +251,7 @@
                   figureImages.append(newImg)
               }
 
-              await Promise.resolve(requestPromises)
+              await Promise.allSettled(requestPromises)
           }
       }
 
