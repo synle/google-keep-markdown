@@ -12,6 +12,13 @@ This is a bookrmarklet code that you can use to make Google Keep showing bookmar
 - Make this into a Chrome Extension
 
 ## Demo and Screenshot
+### TamperMonkey plugin
+There is a Format button appears next to close
+![image](https://user-images.githubusercontent.com/3792401/109426317-e5618080-79a1-11eb-8313-36f55743ad12.png)
+![image](https://user-images.githubusercontent.com/3792401/109426324-f7dbba00-79a1-11eb-949a-3efcef16b5d1.png)
+
+
+### Bookmarklet
 #### Run the bookmarklet after you open the Google Note
 ![image](https://user-images.githubusercontent.com/3792401/109424331-1046d700-7998-11eb-9a64-2d0746905ea5.png)
 
