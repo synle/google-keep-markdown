@@ -1,5 +1,17 @@
-(function(){
-  let target = document.body;
+// ==UserScript==
+// @name         Google Keep Note format
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        https://keep.google.com/
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    let target = document.body;
   const isDarkMode = new Date().getHours() >= 19 || new Date().getHours() <= 8;
   let colorIdx = 0;
   let styleDom = document.getElementById('style-dialog');
@@ -107,7 +119,7 @@
         }
       }
     `
-    target.appendChild(styleDom); 
+    target.appendChild(styleDom);
 
     let newScript = document.createElement("script");
     newScript.src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js";
@@ -134,7 +146,7 @@
 
   let contentDom = document.getElementById('content-dialog');
 
-  function _formatMarkdownForKeep(){
+  function _formatMarkdownForKeep(suppressError){
     const origTitleDom =document.querySelectorAll(`[contenteditable="true"][spellcheck="true"]`)[0]
     const origContentDom =document.querySelectorAll(`[contenteditable="true"][spellcheck="true"]`)[1]
     contentDom = document.getElementById('content-dialog');
@@ -143,7 +155,7 @@
     try{
       shouldBindData = origContentDom && origContentDom.innerText.trim().length > 0;
     }catch(err){}
-    
+
 
     let width = 600;
     if(shouldBindData){
@@ -155,7 +167,7 @@
       contentDom.id = 'content-dialog';
       contentDom.contentEditable = true
       //contentDom.addEventListener('blur', () => contentDom.remove())
-      contentDom.addEventListener('keydown', (e) =>{ 
+      contentDom.addEventListener('keydown', (e) =>{
         let stop = false;
 
         const keycode = parseInt(e.keyCode);
@@ -163,7 +175,7 @@
           // escape key
           contentDom.remove();
           stop = true;
-          
+
         }
 
         if(stop){
@@ -174,18 +186,18 @@
           return false;
         }
       })
-      target.appendChild(contentDom);  
+      target.appendChild(contentDom);
     }
 
     if(shouldBindData){
       // clean the dom
       contentDom.innerText = '';
-      
+
       const articleContent = document.createElement('article');
       contentDom.append(articleContent)
 
       const newContentHtml = `<h2>${origTitleDom.innerText}</h2><hr />` + marked(origContentDom.innerText).trim();
-      
+
       if (newContentHtml !== articleContent.innerHTML && document.activeElement.id !== 'content-dialog') {
           articleContent.innerHTML = newContentHtml;
 
@@ -204,9 +216,9 @@
               } catch (err) {}
           }
       }
-      
+
       contentDom.focus();
-      
+
       // force focus on the content dom to stop google keep from 
       // doing the infinite scroll loader
       contentDom.addEventListener('blur', () => {
@@ -222,8 +234,11 @@
       })
       articleContent.append(closeContentBtn)
     } else {
+      // setTimeout(_formatMarkdownForKeep, 300);
       contentDom.remove();
-      alert('Preview not supported');
+      if(suppressError !== true){
+        alert('Preview is not supported');  
+      }
     }
   }
 
@@ -236,7 +251,7 @@
       r.style.setProperty('--color-bg', '#282a36');
       r.style.setProperty('--color-fg', '#f8f8f2');
       r.style.setProperty('--color-link', '#50fa7b');
-      r.style.setProperty('--color-border', '#f1fa8c');  
+      r.style.setProperty('--color-border', '#f1fa8c');
     } else {
       // light
       r.style.setProperty('--color-bg', '#f8f8f2');
@@ -279,5 +294,41 @@
 
   switchColor();
 
-  setTimeout(_formatMarkdownForKeep, 300);
-})()
+  // auto load the first time
+  setTimeout(() => _formatMarkdownForKeep(true), 300);
+
+
+  // listen on dom mutation
+  // Callback function to execute when mutations are observed
+  const _setupFormatButtonCallback = () => {
+    let noteCloseBtns = []
+    for(let button of document.querySelectorAll('[role="button"')){
+      if(button.innerText.trim() === 'Close'){
+        noteCloseBtns.push(button)
+      }
+    }
+
+    // insert this button
+    for(let noteCloseBtn of noteCloseBtns){
+      if(noteCloseBtn && noteCloseBtn.parentElement.querySelectorAll('.format-markdown-modal-btn').length === 0){
+        const formatButton = document.createElement('div');
+        formatButton.innerText = 'Format'
+        formatButton.className = `format-markdown-modal-btn ${noteCloseBtn.className}`
+        formatButton.style.marginRight = 0;
+        formatButton.style.background = 'red';
+        formatButton.style.color = 'white';
+        formatButton.addEventListener('click', _formatMarkdownForKeep)
+        noteCloseBtn.parentElement.prepend(formatButton);
+      }
+    }
+  }
+
+  // Create an observer instance linked to the callback function
+  // Start observing the target node for configured mutations
+  const targetNode = document.querySelector('.notes-container');
+  new MutationObserver(_setupFormatButtonCallback).observe(targetNode, {
+    attributes: true,
+    childList: false,
+    subtree: false
+  });
+})();
