@@ -6,6 +6,7 @@ This is a bookrmarklet code that you can use to make Google Keep showing bookmar
 - Dark and Light mode
 - Show images associated with Keep notes
 - Support copy and paste into Google Doc or Microsoft Word by converting the images into Base64 encoded content
+- Tamper Monkey plugin support (https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en) and code for it is here https://github.com/synle/google-keep-markdown/blob/main/tampermonkey.plugin.js
 
 ## TODO:
 - Make this into a Chrome Extension
