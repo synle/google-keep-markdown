@@ -114,6 +114,11 @@
       #content-dialog a{
         cursor: pointer;
         text-decoration: none;
+        opacity: 0.7;
+      }
+
+      #content-dialog a:hover{
+        opacity: 1;
       }
 
 
