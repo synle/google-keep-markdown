@@ -25,7 +25,6 @@
         --color-link: #50fa7b;
         --color-border: #44475a;
       }
-
       #content-dialog{
         position: fixed;
         top: 10px;
@@ -43,7 +42,6 @@
         grid-template-columns: minmax(600px, 1fr) 450px;
         box-sizing: border-box;
       }
-
       #content-dialog #content-dialog-close-btn {
         position: absolute;
         top: 0;
@@ -56,11 +54,9 @@
         width: 40px;
         cursor: pointer;
       }
-
       #content-dialog #content-dialog-close-btn:hover, #content-dialog #content-dialog-close-btn:focus{
         background: #333;
       }
-
       #content-dialog pre{
         border: 3px dotted var(--color-border);
         padding: 10px;
@@ -70,17 +66,14 @@
         word-break: break-all;
         overflow: hidden;
       }
-
       #content-dialog h1{
         padding: 0;
         margin: 0;
         margin-bottom: 15px;
       }
-
       #content-dialog a{
         color: var(--color-link);
       }
-
       #content-dialog h2,
       #content-dialog h3,
       #content-dialog h4,
@@ -89,16 +82,12 @@
         padding: 0;
         margin: 0;
       }
-
       #content-dialog p, #content-dialog pre{
         margin-top: 0;
         margin-bottom: 20px;
       }
-
       #content-dialog figure{
-
       }
-
       #content-dialog figure img{
         width: 100%;
         display: block;
@@ -106,34 +95,27 @@
         border-radius: 5px;
         border: 3px solid var(--color-border);
       }
-
       #content-dialog figure img:hover{
         border-color: var(--color-link);
       }
-
       #content-dialog a{
         cursor: pointer;
         text-decoration: none;
         opacity: 0.7;
       }
-
       #content-dialog a:hover{
         opacity: 1;
       }
-
-
       @media only screen and (max-width: 1050px) {
         #content-dialog{
           grid-template-columns: 1fr;
         }
       }
-
       @media only screen and (min-width: 1200px) {
         #content-dialog{
           grid-template-columns: minmax(800px, 1fr) 600px;
         }
       }
-
       @media only screen and (min-width: 1600px) {
         #content-dialog{
           grid-template-columns: minmax(800px, 1fr) 900px;
@@ -223,16 +205,11 @@
         contentDom.focus();
       })
 
-      // add the close button
-      const closeContentBtn = document.createElement('button');
-      closeContentBtn.innerText = 'X'
-      closeContentBtn.id = 'content-dialog-close-btn'
-      closeContentBtn.addEventListener('click', () => {
-        contentDom.remove();
-      })
-      articleContent.append(closeContentBtn)
+      let newContentHtml = origContentDom.innerText.includes('```')
+          ? marked(origContentDom.innerText).trim()
+          : origContentDom.innerText.trim().replace(/\n/g, '<br />')
 
-      const newContentHtml = `<h2>${origTitleDom.innerText}</h2><hr />` + marked(origContentDom.innerText).trim();
+      newContentHtml = `<h2>${origTitleDom.innerText}</h2><hr />` + newContentHtml
 
       if (newContentHtml !== articleContent.innerHTML && document.activeElement.id !== 'content-dialog') {
           articleContent.innerHTML = newContentHtml;
@@ -254,6 +231,15 @@
               await Promise.allSettled(requestPromises)
           }
       }
+
+      // add the close button
+      const closeContentBtn = document.createElement('button');
+      closeContentBtn.innerText = 'X'
+      closeContentBtn.id = 'content-dialog-close-btn'
+      closeContentBtn.addEventListener('click', () => {
+        contentDom.remove();
+      })
+      articleContent.append(closeContentBtn)
 
       for(const anchor of contentDom.querySelectorAll('a')){
         anchor.target = '_blank'
