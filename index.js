@@ -240,20 +240,37 @@
         articleContent.innerHTML = newContentHtml;
 
         // append images
-        const noteImages = [...origTitleDom.previousSibling.querySelectorAll("img")].reverse();
+        let noteImages = [...origTitleDom.previousSibling.querySelectorAll("img")].reverse();
         if (noteImages.length > 0) {
           const figureImages = document.createElement("figure");
+          figureImages.innerHTML= `
+              <div>
+                  <button id='btnChangeImageListOrder' style="background: blue; color: white; margin-bottom: 20px; padding: 5px 10px;">Change Image Ordering</button>
+              </div>
+              <div id="contentDomImageList"></div>
+          `
           contentDom.append(figureImages);
 
-          const requestPromises = [];
-          for (const img of noteImages) {
-            const newImg = document.createElement("div");
-            // newImg.innerHTML = `Loading Image...`;
-            requestPromises.push(parseAndInsertImageAsBase64(img.src, newImg));
-            figureImages.append(newImg);
-          }
+          const contentDomImageList = figureImages.querySelector('#contentDomImageList');
+          const btnChangeImageListOrder = figureImages.querySelector('#btnChangeImageListOrder');
+          btnChangeImageListOrder.addEventListener('click', () => {
+              noteImages = noteImages.reverse();
+              _renderImages();              
+          })
 
-          await Promise.allSettled(requestPromises);
+          await _renderImages();
+
+          async function _renderImages(){
+              contentDomImageList.innerText = '';
+              const requestPromises = [];
+              for (const img of noteImages) {
+                const newImg = document.createElement("div");
+                // newImg.innerHTML = `Loading Image...`;
+                requestPromises.push(parseAndInsertImageAsBase64(img.src, newImg));
+                contentDomImageList.append(newImg);
+              }
+              await Promise.allSettled(requestPromises);
+          }
         }
       }
 
