@@ -206,9 +206,20 @@
       })
 
       let newContentHtml = origContentDom.innerText.includes('```')
-          ? marked(origContentDom.innerText).trim()
-          : origContentDom.innerText.trim().replace(/\n/g, '<br />')
+      if(document.querySelectorAll(`[contenteditable="true"][aria-label="list item"]`).length > 0) {
+          // is a list of checkboxes
+          newContentHtml = [...document.querySelectorAll(`[contenteditable="true"][aria-label="list item"]`)].map(d => `<p>${d.innerText.trim()}</p>`).join('')
+      } else if(origContentDom.innerText.includes('```')){
+          // is markdown content
+          newContentHtml = marked(origContentDom.innerText).trim()
+      } else {
+          // is a plain text
+          newContentHtml = origContentDom.innerText.trim().replace(/\n/g, '<br />')
+      }
+          
+          
 
+      // append the content
       newContentHtml = `<h2>${origTitleDom.innerText}</h2><hr />` + newContentHtml
 
       if (newContentHtml !== articleContent.innerHTML && document.activeElement.id !== 'content-dialog') {
