@@ -106,19 +106,19 @@
       #content-dialog a:hover{
         opacity: 1;
       }
-      @media only screen and (max-width: 1050px) {
+      @media (max-width: 1050px) {
         #content-dialog{
           grid-template-columns: 1fr;
         }
       }
-      @media only screen and (min-width: 1200px) {
+      @media (min-width: 1200px) {
         #content-dialog{
-          grid-template-columns: minmax(800px, 1fr) 600px;
+          grid-template-columns: 1fr 600px;
         }
       }
-      @media only screen and (min-width: 1600px) {
+      @media (min-width: 1600px) {
         #content-dialog{
-          grid-template-columns: minmax(800px, 1fr) 900px;
+          grid-template-columns: 1fr 900px;
         }
       }
     `
