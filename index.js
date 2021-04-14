@@ -153,6 +153,14 @@
   let contentDom = document.getElementById("content-dialog");
 
   async function _formatMarkdownForKeep(suppressError) {
+    contentDom = document.getElementById("content-dialog");
+
+    // remove the previous dom
+    try{
+        contentDom.remove();
+        contentDom = null;
+    } catch(err){}
+
     const plainContentDoms = document.querySelectorAll(
       `[contenteditable="true"][spellcheck="true"]`
     );
@@ -161,7 +169,6 @@
     const listItemsDoms = document.querySelectorAll(
       `[contenteditable="true"][aria-label="list item"]`
     );
-    contentDom = document.getElementById("content-dialog");
 
     let shouldBindData =
       listItemsDoms.length > 0 || plainContentDoms.length > 0;
