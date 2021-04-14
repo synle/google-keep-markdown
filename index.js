@@ -81,6 +81,8 @@
       #content-dialog h6{
         padding: 0;
         margin: 0;
+        margin-top: 10px;
+        margin-bottom: 5px;
       }
       #content-dialog p, #content-dialog pre{
         margin-top: 0;
@@ -151,24 +153,18 @@
   let contentDom = document.getElementById("content-dialog");
 
   async function _formatMarkdownForKeep(suppressError) {
-    const origTitleDom = document.querySelectorAll(
+    const plainContentDoms = document.querySelectorAll(
       `[contenteditable="true"][spellcheck="true"]`
-    )[0];
-    const origContentDom = document.querySelectorAll(
-      `[contenteditable="true"][spellcheck="true"]`
-    )[1];
+    );
+    const origTitleDom = plainContentDoms[0];
+    const origContentDom = plainContentDoms[1];
+    const listItemsDoms = document.querySelectorAll(
+      `[contenteditable="true"][aria-label="list item"]`
+    );
     contentDom = document.getElementById("content-dialog");
 
-    let shouldBindData = false;
-    try {
-      shouldBindData =
-        origContentDom && origContentDom.innerText.trim().length > 0;
-    } catch (err) {}
-
-    let width = 600;
-    if (shouldBindData) {
-      width = origContentDom.offsetWidth + 40;
-    }
+    let shouldBindData =
+      listItemsDoms.length > 0 || plainContentDoms.length > 0;
 
     if (!contentDom) {
       contentDom = document.createElement("div");
@@ -209,7 +205,7 @@
         contentDom.focus();
       });
 
-      let newContentHtml = origContentDom.innerText.includes("```");
+      let newContentHtml;
       if (
         document.querySelectorAll(
           `[contenteditable="true"][aria-label="list item"]`
@@ -229,7 +225,7 @@
       } else {
         // is a plain text
         newContentHtml = origContentDom.innerText
-          .trim()
+          .replace(/ /g, `&nbsp;`)
           .replace(/\n/g, "<br />");
       }
 
