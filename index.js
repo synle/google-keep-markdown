@@ -240,15 +240,13 @@
         articleContent.innerHTML = newContentHtml;
 
         // append images
-        const noteImages = origTitleDom.previousSibling.querySelectorAll("img");
+        const noteImages = [...origTitleDom.previousSibling.querySelectorAll("img")].reverse();
         if (noteImages.length > 0) {
           const figureImages = document.createElement("figure");
           contentDom.append(figureImages);
 
           const requestPromises = [];
-          for (const img of origTitleDom.previousSibling.querySelectorAll(
-            "img"
-          )) {
+          for (const img of noteImages) {
             const newImg = document.createElement("div");
             // newImg.innerHTML = `Loading Image...`;
             requestPromises.push(parseAndInsertImageAsBase64(img.src, newImg));
