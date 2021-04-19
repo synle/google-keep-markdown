@@ -42,6 +42,13 @@
         grid-template-columns: minmax(600px, 1fr) 450px;
         box-sizing: border-box;
       }
+      #content-dialog .unselectable {
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
       #content-dialog #content-dialog-close-btn {
         position: absolute;
         top: 0;
@@ -240,6 +247,7 @@
       newContentHtml =
         `<h2>${origTitleDom.innerText}</h2><hr />` + newContentHtml;
 
+debugger
       if (
         newContentHtml !== articleContent.innerHTML &&
         document.activeElement.id !== "content-dialog"
@@ -252,7 +260,7 @@
           const figureImages = document.createElement("figure");
           figureImages.innerHTML= `
               <div>
-                  <button id='btnChangeImageListOrder' style="background: blue; color: white; margin-bottom: 20px; padding: 5px 10px;">Change Image Ordering</button>
+                  <button id='btnChangeImageListOrder' style="background: blue; color: white; margin-bottom: 20px; padding: 5px 10px;" class="unselectable" contenteditable="false">Change Image Ordering</button>
               </div>
               <div id="contentDomImageList"></div>
           `
@@ -288,6 +296,8 @@
       closeContentBtn.addEventListener("click", () => {
         contentDom.remove();
       });
+      closeContentBtn.classList.add('unselectable');
+      closeContentBtn.contentEditable = "false"
       articleContent.append(closeContentBtn);
 
       for (const anchor of contentDom.querySelectorAll("a")) {
