@@ -250,7 +250,7 @@
                     const figureImages = document.createElement("figure");
                     figureImages.innerHTML = `
               <button id='btnChangeImageListOrder' style="display: block; background: blue; color: white;" class="unselectable" contenteditable="false">Change Image Ordering</button>
-              <h2>Images</h2><hr />
+              <h2>${noteImages.length} Images</h2><hr />
               <div id="contentDomImageList"></div>
           `
                     contentDom.append(figureImages);
