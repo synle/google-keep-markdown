@@ -247,7 +247,6 @@
       newContentHtml =
         `<h2>${origTitleDom.innerText}</h2><hr />` + newContentHtml;
 
-debugger
       if (
         newContentHtml !== articleContent.innerHTML &&
         document.activeElement.id !== "content-dialog"
