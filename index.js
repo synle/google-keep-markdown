@@ -45,6 +45,10 @@
       #content-dialog button{
         cursor: pointer;
         opacity: 0.8;
+        border: none;
+        background: #ccc;
+        padding: 10px 15px;
+        font-weight: bold;
       }
       #content-dialog button:hover, #content-dialog button:focus{
         opacity: 1;
@@ -60,7 +64,6 @@
         position: absolute;
         top: 0;
         right: 0;
-        padding: 10px;
         margin: 0;
         background: black;
         color: white;
@@ -258,11 +261,14 @@
         articleContent.innerHTML = newContentHtml;
 
         // append images
-        let noteImages = [...origTitleDom.previousSibling.querySelectorAll("img")].reverse();
+        let noteImages = [];
+        try{
+          noteImages = [...origTitleDom.previousSibling.querySelectorAll("img")].reverse();
+        }catch(err){}
         if (noteImages.length > 0) {
           const figureImages = document.createElement("figure");
           figureImages.innerHTML= `
-                <button id='btnChangeImageListOrder' style="display: block; background: blue; color: white; margin-bottom: 20px; padding: 5px 10px;" class="unselectable" contenteditable="false">Change Image Ordering</button>
+              <button id='btnChangeImageListOrder' style="display: block; background: blue; color: white; margin-bottom: 20px;" class="unselectable" contenteditable="false">Change Image Ordering</button>
               <div id="contentDomImageList"></div>
           `
           contentDom.append(figureImages);
@@ -300,6 +306,14 @@
       closeContentBtn.classList.add('unselectable');
       closeContentBtn.contentEditable = "false"
       articleContent.append(closeContentBtn);
+
+
+      // button to change color
+      const toggleThemeBtn = document.createElement("button");
+      toggleThemeBtn.innerText = "Toggle Theme";
+      toggleThemeBtn.addEventListener("click", switchColor);
+      articleContent.prepend(toggleThemeBtn);
+      
 
       for (const anchor of contentDom.querySelectorAll("a")) {
         anchor.target = "_blank";
