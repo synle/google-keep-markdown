@@ -42,6 +42,13 @@
         grid-template-columns: minmax(600px, 1fr) 450px;
         box-sizing: border-box;
       }
+      #content-dialog button{
+        cursor: pointer;
+        opacity: 0.8;
+      }
+      #content-dialog button:hover, #content-dialog button:focus{
+        opacity: 1;
+      }
       #content-dialog .unselectable {
         -webkit-user-select: none;
         -webkit-touch-callout: none;
@@ -60,9 +67,6 @@
         height: 40px;
         width: 40px;
         cursor: pointer;
-      }
-      #content-dialog #content-dialog-close-btn:hover, #content-dialog #content-dialog-close-btn:focus{
-        background: #333;
       }
       #content-dialog pre{
         border: 3px dotted var(--color-border);
@@ -258,9 +262,7 @@
         if (noteImages.length > 0) {
           const figureImages = document.createElement("figure");
           figureImages.innerHTML= `
-              <div>
-                  <button id='btnChangeImageListOrder' style="background: blue; color: white; margin-bottom: 20px; padding: 5px 10px;" class="unselectable" contenteditable="false">Change Image Ordering</button>
-              </div>
+                <button id='btnChangeImageListOrder' style="display: block; background: blue; color: white; margin-bottom: 20px; padding: 5px 10px;" class="unselectable" contenteditable="false">Change Image Ordering</button>
               <div id="contentDomImageList"></div>
           `
           contentDom.append(figureImages);
