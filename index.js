@@ -135,6 +135,11 @@
       #content-dialog a:hover{
         opacity: 1;
       }
+
+      #content-dialog.single-column{
+        grid-template-columns: 1fr;
+      }
+      
       @media (max-width: 1050px) {
         :root{
           --width-content: 1050px;
@@ -217,7 +222,10 @@
       });
       target.appendChild(contentDom);
     }
-    if (shouldBindData) {
+    
+    let isSingleColumn = true;
+
+    if (shouldBindData) {      
       // clean the dom
       contentDom.innerText = "";
       const articleContent = document.createElement("article");
@@ -280,7 +288,16 @@
               <h2>${noteImages.length} Images</h2><hr />
               <div id="contentDomImageList"></div>
           `;
-          contentDom.append(figureImages);
+
+          // figure out if we need to add it to the second column or simply consolidate things into a single column
+          if(articleContent.innerText.length <= 5000){
+            // too little text, put things in the same column
+            articleContent.append(figureImages);
+            isSingleColumn = true;
+          } else {
+            contentDom.append(figureImages);
+            isSingleColumn = false;
+          }
           const contentDomImageList = figureImages.querySelector(
             "#contentDomImageList"
           );
@@ -307,6 +324,9 @@
           }
         }
       }
+
+      contentDom.classList.toggle('single-column', isSingleColumn);
+
       // add the close button
       const closeContentBtn = document.createElement("button");
       closeContentBtn.innerText = "X";
