@@ -327,6 +327,14 @@
         anchor.contentEditable = false;
       }
       contentDom.focus();
+
+      // handling going back on url, remove the content dom
+      const popStateHandler = window.addEventListener('popstate', (event) =>
+      {
+        contentDom.remove();
+        window.removeEventListener('popstate', popStateHandler);
+      });
+
     } else {
       // setTimeout(_formatMarkdownForKeep, 300);
       contentDom.remove();
