@@ -50,6 +50,7 @@
         background: #ccc;
         padding: 10px 15px;
         font-weight: bold;
+        margin-bottom: 20px;
       }
       #content-dialog button:hover, #content-dialog button:focus{
         opacity: 1;
@@ -96,8 +97,8 @@
       #content-dialog h6{
         padding: 0;
         margin: 0;
-        margin-top: 10px;
-        margin-bottom: 5px;
+        margin-top: 0;
+        margin-bottom: 7px;
       }
       #content-dialog p, #content-dialog pre{
         margin-top: 0;
@@ -270,7 +271,7 @@
         if (noteImages.length > 0) {
           const figureImages = document.createElement("figure");
           figureImages.innerHTML= `
-              <button id='btnChangeImageListOrder' style="display: block; background: blue; color: white; margin-bottom: 20px;" class="unselectable" contenteditable="false">Change Image Ordering</button>
+              <button id='btnChangeImageListOrder' style="display: block; background: blue; color: white;" class="unselectable" contenteditable="false">Change Image Ordering</button>
               <div id="contentDomImageList"></div>
           `
           contentDom.append(figureImages);
