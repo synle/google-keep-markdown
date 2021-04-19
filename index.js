@@ -42,6 +42,7 @@
         grid-template-columns: minmax(600px, 1fr) 450px;
         box-sizing: border-box;
       }
+
       #content-dialog button{
         cursor: pointer;
         opacity: 0.8;
@@ -103,6 +104,7 @@
         margin-bottom: 20px;
       }
       #content-dialog figure{
+        margin: 0px 0px 0px 5px;
       }
       #content-dialog figure img{
         width: 100%;
