@@ -261,9 +261,18 @@
           .split('\n')
           .map(s => {
             if(s.match(/^[#><][#><]+/g)){
+              // header section break option 1
               s = s.replace(/^[#><]+/g, '').trim();
               s = `<hr /><h3>${s}</h3><hr />`
             }
+            if(s.match(/[=][=][=]+/g)){
+              // header section break option 2
+              s = s.replace(/[=][=][=]+/g, '<hr />').trim();
+            }
+
+            // checkboxes
+            s = s.replace(/\[[ ]*\]/gi, ' &#9746; ')
+            s = s.replace(/\[[ ]*[X][ ]*\]/gi, ' &#9744; ')
             return s;
           })
           .join('\n')
