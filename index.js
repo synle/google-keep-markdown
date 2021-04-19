@@ -351,10 +351,22 @@
 
   function parseAndInsertImageAsBase64(url, newImg) {
     return new Promise((resolve) => {
+      let resolved = false;
+
       toDataURL(url, function (dataUrl) {
         newImg.innerHTML = `<a href='${url}'><img src="${dataUrl}" altText="Doc Image" /></a>`;
         resolve();
+        resolved = true;
       });
+
+      setTimeout(
+        () => {
+          if(resolved === false){
+            newImg.innerHTML = `<a href='${url}'><img src="${url}" altText="Doc Image" /></a>`;
+            resolve();
+          }
+        }, 5000
+      )
     });
   }
 
