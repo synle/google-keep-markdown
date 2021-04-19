@@ -265,9 +265,9 @@
               s = s.replace(/^[#><]+/g, '').trim();
               s = `<hr /><h3>${s}</h3><hr />`
             }
-            if(s.match(/[=][=][=]+/g)){
+            if(s.match(/[=-][=-][=-]+/g)){
               // header section break option 2
-              s = s.replace(/[=][=][=]+/g, '<hr />').trim();
+              s = s.replace(/[=-][=-][=-]+/g, '<hr />').trim();
             }
 
             // checkboxes
