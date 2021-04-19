@@ -39,7 +39,7 @@
         border: 5px solid var(--color-border);
         border-radius: 5px;
         display: grid;
-        grid-template-columns: minmax(600px, 1fr) 450px;
+        grid-template-columns: 1fr 450px;
         box-sizing: border-box;
       }
 
@@ -78,9 +78,15 @@
         padding: 10px;
         margin-top: 7px;
         margin-bottom: 10px;
+      }
+      #content-dialog pre, #content-dialog code, #content-dialog p{
         text-overflow: ellipsis;
         word-break: break-all;
         overflow: hidden;
+        max-width: 800px;
+      }
+      #content-dialog p{
+        word-break: break-all;
       }
       #content-dialog h1{
         padding: 0;
