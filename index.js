@@ -34,7 +34,7 @@
         z-index: 40001;
         background: var(--color-bg);
         color: var(--color-fg);
-        padding: 20px 25px;
+        padding: 10px 15px;
         overflow: auto;
         border: 5px solid var(--color-border);
         border-radius: 5px;
@@ -107,12 +107,16 @@
       #content-dialog figure{
         margin: 0px 0px 0px 5px;
       }
-      #content-dialog figure img{
+      #content-dialog figure a{
+        display: block;
+      }
+      #content-dialog figure a img{
         width: 100%;
         display: block;
         margin: 0 auto 30px 0;
         border-radius: 5px;
         border: 3px solid var(--color-border);
+        box-sizing: border-box;
       }
       #content-dialog figure img:hover{
         border-color: var(--color-link);
@@ -120,7 +124,7 @@
       #content-dialog a{
         cursor: pointer;
         text-decoration: none;
-        opacity: 0.7;
+        opacity: 0.95;
       }
       #content-dialog a:hover{
         opacity: 1;
