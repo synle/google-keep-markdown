@@ -258,7 +258,17 @@
       } else {
         // is a plain text
         newContentHtml = origContentDom.innerText
-          .replace(/ /g, `&nbsp;`)
+          .split('\n')
+          .map(s => {
+            if(s.match(/^[#><][#><]+/g)){
+              s = s.replace(/^[#><]+/g, '').trim();
+              s = `<hr /><h3>${s}</h3><hr />`
+            }
+            return s;
+          })
+          .join('\n')
+          .replace(/ /g, ` &nbsp; `)
+          .replace(/[\n\r][\n\r]+/g, '\n')
           .replace(/\n/g, "<br />");
       }
       // append the content
