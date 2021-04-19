@@ -12,6 +12,9 @@
   let target = document.body;
   const isDarkMode = new Date().getHours() >= 19 || new Date().getHours() <= 8;
   let colorIdx = 0;
+  try{
+    colorIdx = colorIdx = parseInt(localStorage['format.keep.colorIdx'] || '0') % 2;
+  } catch(err){}
   let styleDom = document.getElementById("style-dialog");
   if (!styleDom) {
     styleDom = document.createElement("style");
@@ -139,7 +142,7 @@
       #content-dialog.single-column{
         grid-template-columns: 1fr;
       }
-      
+
       @media (max-width: 1050px) {
         :root{
           --width-content: 1050px;
@@ -364,10 +367,13 @@
     }
   }
 
-  function switchColor() {
+  function switchColor(isInit) {
     // tab key or shift
     var r = document.querySelector(":root");
-    colorIdx++;
+    if(isInit !== true){
+      colorIdx++;
+      localStorage['format.keep.colorIdx'] = colorIdx;
+    }
     if (colorIdx % 2 === 0) {
       // dark
       r.style.setProperty("--color-bg", "#282a36");
@@ -424,7 +430,7 @@
     }
     return false;
   }
-  switchColor();
+  switchColor(true);
   // auto load the first time
   setTimeout(() => {
     _formatMarkdownForKeep(true);
