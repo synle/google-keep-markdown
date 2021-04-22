@@ -271,8 +271,8 @@
             }
 
             // checkboxes
-            s = s.replace(/\[[ ]*\]/gi, ' &#9746; ')
-            s = s.replace(/\[[ ]*[X][ ]*\]/gi, ' &#9744; ')
+            s = s.replace(/\[[ ]*\]/gi, ' &#9744; ')
+            s = s.replace(/\[[ ]*[X][ ]*\]/gi, ' &#9746; ')
             return s;
           })
           .join('\n')
